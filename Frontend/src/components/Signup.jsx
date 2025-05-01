@@ -3,9 +3,9 @@ import { Eye, EyeOff } from "lucide-react";
 import ResponsiveAppBar from "./Navbar";
 import { Link } from "react-router-dom";
 import DatePickerUI from "./DatePicker";
-import axios from 'axios'
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
+import axiosApi from "../api/axiosApi";
 
 export default function RegistrationForm() {
     const [formData, setFormData] = useState({
@@ -93,7 +93,7 @@ export default function RegistrationForm() {
         e.preventDefault();
 
         if (validateForm()) {
-            await axios.post('http://localhost:3000/api/users/createuser', formData, { headers: { 'Content-Type': 'application/json' } })
+            await axiosApi.post('/api/users/createuser', formData, { headers: { 'Content-Type': 'application/json' } })
                 .then((res) => {
                     if (res.data.userCreated) {
                         Swal.fire({

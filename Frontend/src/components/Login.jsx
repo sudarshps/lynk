@@ -2,14 +2,16 @@ import { useState } from 'react';
 import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react';
 import ResponsiveAppBar from './Navbar';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import Swal from 'sweetalert2'
+import axiosApi from '../api/axiosApi';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,7 +32,7 @@ export default function LoginPage() {
       return;
     }
 
-    await axios.post('http://localhost:3000/api/users/login', { email, password })
+    await axiosApi.post('/api/users/login', { email, password })
       .then((res) => {        
         if (res.data.valid) {
           Swal.fire({
@@ -38,6 +40,8 @@ export default function LoginPage() {
             text: res.data.message,
             icon: "success"
           });
+
+          navigate('/')
         }else{
           Swal.fire({
             icon: "error",

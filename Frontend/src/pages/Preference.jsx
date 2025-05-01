@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ResponsiveAppBar from '../components/Navbar';
-import axios from 'axios';
+import axiosApi from '../api/axiosApi';
+import { useNavigate } from 'react-router-dom';
 
 const categories = [
   'Technology',
@@ -15,6 +16,8 @@ const categories = [
 
 const Preference = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
+  
+  const navigate = useNavigate()
 
   const toggleCategory = (category) => {
     setSelectedCategories(prev =>
@@ -30,7 +33,12 @@ const Preference = () => {
           alert('Select atleast one category!')
           return 
         }
-        await axios.put(`https://localhost:3000/api/users/${id}`,{selectedCategories})
+        await axiosApi.put(`/api/users/preference`,{selectedCategories})
+        .then((res)=>{
+          if(res.data.isUpdated){
+            navigate('/')
+          }
+        })
   };
 
   return (

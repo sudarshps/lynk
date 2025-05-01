@@ -11,11 +11,10 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import { Link } from 'react-router-dom';
 
 const pages = ['Categories'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'My Blogs', 'Logout'];
 
 function ResponsiveAppBar({ isDrawerOpen }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -47,7 +46,7 @@ function ResponsiveAppBar({ isDrawerOpen }) {
             <Typography
               variant="h6"
               noWrap
-              component="a"
+              // component="a"
               sx={{
                 mr: 2,
                 display: { xs: 'none', md: 'flex' },
@@ -97,7 +96,7 @@ function ResponsiveAppBar({ isDrawerOpen }) {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           <Typography
             variant="h5"
             noWrap
@@ -114,7 +113,7 @@ function ResponsiveAppBar({ isDrawerOpen }) {
               textDecoration: 'none',
             }}
           >
-            LOGO
+            Lynk
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (

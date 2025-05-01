@@ -2,11 +2,12 @@ import React from 'react'
 import ResponsiveAppBar from '../components/Navbar'
 import SwipeableTemporaryDrawer from '../components/Drawer'
 import BlogCard from '../components/Card'
+import axiosApi from '../api/axiosApi'
 
 const Home = () => {
 
     const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
-    const [products, setProducts] = React.useState([])
+    const [articles, setArticles] = React.useState([])
     const openDrawer = () => {
         setIsDrawerOpen(prev => !prev)
     }
@@ -15,14 +16,12 @@ const Home = () => {
     }
 
     React.useEffect(() => {
-        const fetchProducts = async () => {
-            fetch('https://fakestoreapi.com/products')
-                .then(response => response.json())
-                .then(data => {
-                    setProducts(data)
-                });
+        const fetchArticles = async () => {
+            await axiosApi.get(`/api/article/fetcharticles`)
+            .then((res)=>setArticles(res.data.articles))
+            .catch((err)=>console.error(err))
         }
-        fetchProducts()
+        fetchArticles()
     }, [])
 
 
@@ -30,7 +29,7 @@ const Home = () => {
         <div>
             <ResponsiveAppBar isDrawerOpen={openDrawer} />
             <SwipeableTemporaryDrawer open={isDrawerOpen} onClose={handleClose} />
-            <BlogCard products={products} />
+            <BlogCard articles={articles} />
         </div>
     )
 }

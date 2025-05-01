@@ -1,5 +1,6 @@
 import UserModel from "../model/user_model.js"
 import bcrypt from 'bcryptjs'
+import {generateToken,setToken} from '../utils/token.js'
 
 class UserController{
     constructor(){}
@@ -19,6 +20,9 @@ class UserController{
             if(!userRegistered){
                 return res.status(500).json({userCreated:false,message:'User registration failed'})
             }
+            const token = generateToken(userRegistered)
+            setToken(res,token)
+
             return res.status(200).json({userCreated:true,message:'Registration successful!'})
         } catch (error) {
             if(error.code === 11000 && error.keyPattern?.email){
@@ -43,11 +47,28 @@ class UserController{
             if(!validPassword){
                 return res.status(401).json({valid:false,message:'Invalid password'})
             }
+            const token = generateToken(exist)
+            setToken(res,token)
             return res.status(200).json({valid:true,message:'Login successful!'})
              
         } catch (error) {
             console.error('error in user login',error);
             return res.status(500).json({valid:false,message:'internal server error'})
+        }
+    }
+
+    async userPreference(req,res){
+        try {
+            const{selectedCategories} = req.body
+            const userId = req.user._id
+            const update = await UserModel.findByIdAndUpdate(userId,{preference:selectedCategories},{new:true})
+            if(!update){
+                return res.status(401).json({isUpdated:false,message:'Preference updation failed'})
+            }
+            return res.status(200).json({isUpdated:true,message:'Preference updated successfully!'})
+        } catch (error) {
+            console.error('error while updating user preference',error);
+            
         }
     }
 
