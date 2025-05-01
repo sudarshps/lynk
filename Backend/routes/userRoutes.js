@@ -7,5 +7,8 @@ const router = Router()
 
 router.post('/createuser',userController.createUser)
 router.post('/login',userController.userLogin)
-router.put('/preference',passport.authenticate('jwt',{session:false}),userController.userPreference)
+router.put('/update',passport.authenticate('jwt',{session:false}),userController.updateUser)
+router.get('/profile',passport.authenticate('jwt',{session:false}),userController.getUser)
+router.get('/checkauth',userController.checkAuth)
+router.post('/logout',userController.logout)
 export default router

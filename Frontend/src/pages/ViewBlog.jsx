@@ -3,17 +3,25 @@ import { useParams } from 'react-router-dom';
 import axiosApi from '../api/axiosApi';
 import { ThumbsUp, ThumbsDown, Ban } from 'lucide-react';
 import ResponsiveAppBar from '../components/Navbar';
+import { useAuth } from '../api/AuthContext';
 
 export default function ViewBlog() {
     const { id } = useParams();
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isOwnPost, setIsOwnPost] = useState(false)
+    const { user } = useAuth()
 
     useEffect(() => {
         const fetchArticle = async () => {
             try {
                 const res = await axiosApi.get(`/api/article/getarticle/${id}`);
                 setArticle(res.data.article);
+                if (res.data.article.userId._id === user._id) {
+                    console.log('hello');
+                    
+                    setIsOwnPost(true)
+                }
             } catch (error) {
                 console.error('Error fetching article:', error);
             } finally {
@@ -22,7 +30,7 @@ export default function ViewBlog() {
         };
 
         fetchArticle();
-    }, [id]);
+    }, [id]);    
 
     if (loading) {
         return <p className="text-center mt-10 text-gray-600">Loading...</p>;
@@ -36,10 +44,17 @@ export default function ViewBlog() {
         <>
             <ResponsiveAppBar />
             <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow mt-10">
-                <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
-                <div className="mb-4 text-sm text-gray-500">
-                    Categories: {article.category?.join(', ') || 'None'}
+                <h1 className="text-3xl font-bold mb-2">{article.title}</h1>
+
+                <div className="flex justify-between items-center text-sm text-gray-500 mb-4">
+                    <p>By <span className="font-medium text-gray-700">{article.userId?.firstName || 'Unknown Author'}</span></p>
+                    <p>{new Date(article.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    })}</p>
                 </div>
+
                 {article.image && (
                     <img
                         src={article.image}
@@ -47,6 +62,7 @@ export default function ViewBlog() {
                         className="w-full max-h-[400px] object-cover rounded mb-4"
                     />
                 )}
+
                 <p className="text-lg text-gray-800 mb-6 whitespace-pre-line">
                     {article.description}
                 </p>
@@ -64,18 +80,31 @@ export default function ViewBlog() {
                     </div>
                 )}
 
-                <div className="flex gap-4">
-                    <button className="flex items-center gap-1 text-green-600 hover:text-green-800">
-                        <ThumbsUp size={18} /> Like
-                    </button>
-                    <button className="flex items-center gap-1 text-yellow-600 hover:text-yellow-800">
-                        <ThumbsDown size={18} /> Dislike
-                    </button>
-                    <button className="flex items-center gap-1 text-red-600 hover:text-red-800">
-                        <Ban size={18} /> Block
-                    </button>
+                <div className='flex gap-6'>
+                    <div className="mb-6 text-gray-600 text-sm">
+                        <span className="font-medium">{article.likes.length} likes</span>
+                    </div>
+                    <div className="mb-6 text-gray-600 text-sm">
+                        <span className="font-medium">{article.dislikes.length} dislikes</span>
+                    </div>
                 </div>
+
+
+                {!isOwnPost && (
+                    <div className="flex gap-4">
+                        <button className="flex items-center gap-1 text-green-600 hover:text-green-800">
+                            <ThumbsUp size={18} /> Like
+                        </button>
+                        <button className="flex items-center gap-1 text-yellow-600 hover:text-yellow-800">
+                            <ThumbsDown size={18} /> Dislike
+                        </button>
+                        <button className="flex items-center gap-1 text-red-600 hover:text-red-800">
+                            <Ban size={18} /> Block
+                        </button>
+                    </div>
+                )}
             </div>
         </>
+
     );
 }

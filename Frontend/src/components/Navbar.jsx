@@ -8,17 +8,19 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link } from 'react-router-dom';
+import {useAuth} from '../api/AuthContext.jsx'
+import { useNavigate } from 'react-router-dom';
 
-const pages = ['Categories'];
-const settings = ['Profile', 'My Blogs', 'Logout'];
+// const pages = ['Categories'];
 
-function ResponsiveAppBar({ isDrawerOpen }) {
+function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const navigate = useNavigate()
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -29,13 +31,13 @@ function ResponsiveAppBar({ isDrawerOpen }) {
 
   const handleNavMenuClick = () => {
     setAnchorElNav(null);
-
-    isDrawerOpen(prev => !prev)
   };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const {user,logout} = useAuth()
 
   return (
     <AppBar position="static">
@@ -73,7 +75,7 @@ function ResponsiveAppBar({ isDrawerOpen }) {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
+            {/* <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
@@ -94,7 +96,7 @@ function ResponsiveAppBar({ isDrawerOpen }) {
                   <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
                 </MenuItem>
               ))}
-            </Menu>
+            </Menu> */}
           </Box>
           {/* <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} /> */}
           <Typography
@@ -116,17 +118,9 @@ function ResponsiveAppBar({ isDrawerOpen }) {
             Lynk
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleNavMenuClick}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+           
           </Box>
-          <Box sx={{ flexGrow: 0 }}>
+          {user?(<Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -148,13 +142,21 @@ function ResponsiveAppBar({ isDrawerOpen }) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Link to='/profile'><Typography sx={{ textAlign: 'center' }}>Profile</Typography></Link>
                 </MenuItem>
-              ))}
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Link to='/myblogs'><Typography sx={{ textAlign: 'center' }}>My Blogs</Typography></Link>
+                </MenuItem>
+                <MenuItem onClick={()=>{
+                  handleCloseUserMenu()
+                  navigate('/login')
+                  logout()
+                }}>
+                  <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
+                </MenuItem>
             </Menu>
-          </Box>
+          </Box>):(<button onClick={()=>navigate('/login')} className='bg-white hover:cursor-pointer text-black px-4 py-2 rounded-xl shadow-md'>Login</button>)}
         </Toolbar>
       </Container>
     </AppBar>

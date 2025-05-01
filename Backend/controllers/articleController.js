@@ -57,7 +57,7 @@ class ArticleController {
     async getEditUserArticle(req,res){
         try {
             const{id} = req.params
-            const article = await ArticleModel.findById(id)
+            const article = await ArticleModel.findById(id).populate('userId','firstName')
             if(!article){
                 return res.status(500).json({message:'error while fetching user articles'})
             }

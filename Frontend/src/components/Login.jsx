@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import axiosApi from '../api/axiosApi';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../api/AuthContext';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate()
+  const {setUser} = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,6 +44,8 @@ export default function LoginPage() {
           });
 
           navigate('/')
+          setUser(true)
+
         }else{
           Swal.fire({
             icon: "error",
@@ -146,13 +150,6 @@ export default function LoginPage() {
               >
                 Sign In
               </button>
-            </div>
-            <div className="flex items-center justify-center">
-              <div className="text-sm">
-                <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
-                  Forgot your password?
-                </a>
-              </div>
             </div>
           </form>
         </div>

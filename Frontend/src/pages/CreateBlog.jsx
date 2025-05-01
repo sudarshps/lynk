@@ -17,7 +17,6 @@ export default function CreateBlog() {
 
     const fileInputRef = useRef(null);
 
-    // Sample categories for demonstration
     const availableCategories = [
         { id: 1, name: 'Technology' },
         { id: 2, name: 'Health' },
@@ -78,7 +77,6 @@ export default function CreateBlog() {
     };
 
     const handleSubmit = async () => {
-        // Create article object to send to backend
         if (!title.trim()) {
             alert('Please enter an article title.');
             return;
@@ -151,7 +149,6 @@ export default function CreateBlog() {
                     </div>
 
                     <div>
-                        {/* Title */}
                         <div className="mb-6">
                             <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
                                 Article Title <span className="text-red-500">*</span>
@@ -167,7 +164,6 @@ export default function CreateBlog() {
                         </div>
 
 
-                        {/* Content */}
                         <div className="mb-6">
                             <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
                                 Article Content <span className="text-red-500">*</span>
@@ -182,7 +178,6 @@ export default function CreateBlog() {
                             />
                         </div>
 
-                        {/* Image Upload */}
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Images
@@ -204,7 +199,6 @@ export default function CreateBlog() {
                                 />
                             </div>
 
-                            {/* Image Previews */}
                             {image && <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                                 <div className="relative group">
                                     <div className="w-full overflow-hidden rounded-md bg-gray-200">
@@ -226,7 +220,6 @@ export default function CreateBlog() {
                             </div>}
                         </div>
 
-                        {/* Tags */}
                         <div className="mb-6">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Tags
@@ -245,7 +238,6 @@ export default function CreateBlog() {
                                 </div>
                             </div>
 
-                            {/* Tag Pills */}
                             {tags.length > 0 && (
                                 <div className="flex flex-wrap gap-2 mt-3">
                                     {tags.map(tag => (
@@ -267,7 +259,6 @@ export default function CreateBlog() {
                             )}
                         </div>
 
-                        {/* Categories */}
                         <div className="mb-8">
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Categories <span className="text-red-500">*</span>
@@ -293,7 +284,6 @@ export default function CreateBlog() {
                             )}
                         </div>
 
-                        {/* Submit Button */}
                         <div className="mt-8">
                             <button
                                 type="button"

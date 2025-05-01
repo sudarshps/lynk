@@ -33,7 +33,7 @@ const Preference = () => {
           alert('Select atleast one category!')
           return 
         }
-        await axiosApi.put(`/api/users/preference`,{selectedCategories})
+        await axiosApi.put(`/api/users/update`,{selectedCategories})
         .then((res)=>{
           if(res.data.isUpdated){
             navigate('/')

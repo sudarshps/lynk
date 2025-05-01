@@ -12,9 +12,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Link } from 'react-router-dom';
+import axiosApi from '../api/axiosApi';
 
 
-export default function BlogCard({ articles }) {
+export default function BlogCard() {
 
   const formatDate = (isoDate) => {
     const date = new Date(isoDate);
@@ -24,6 +25,17 @@ export default function BlogCard({ articles }) {
       day: 'numeric',
     });
   };
+  const [articles, setArticles] = React.useState([])
+  
+
+  React.useEffect(() => {
+    const fetchArticles = async () => {
+        await axiosApi.get(`/api/article/fetcharticles`)
+        .then((res)=>setArticles(res.data.articles))
+        .catch((err)=>console.error(err))
+    }
+    fetchArticles()
+}, [])
 
 
   return (
@@ -37,11 +49,11 @@ export default function BlogCard({ articles }) {
                   R
                 </Avatar>
               }
-              action={
-                <IconButton aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              }
+              // action={
+              //   <IconButton aria-label="settings">
+              //     <MoreVertIcon />
+              //   </IconButton>
+              // }
               title={article.title}
               subheader={formatDate(article.createdAt)}
             />
@@ -56,14 +68,14 @@ export default function BlogCard({ articles }) {
                 {article.description}
               </Typography>
             </CardContent>
-            <CardActions disableSpacing>
+            {/* <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
               </IconButton>
               <IconButton aria-label="share">
                 <ShareIcon />
               </IconButton>
-            </CardActions>
+            </CardActions> */}
           </Card>
         </Link>
 

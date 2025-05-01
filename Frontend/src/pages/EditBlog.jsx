@@ -120,7 +120,6 @@ export default function EditBlog() {
         navigate('/myblogs');
     };
 
-    // Reuse your existing form UI here (copy from CreateBlog)
     return (
         <>
             <ResponsiveAppBar />
@@ -131,7 +130,6 @@ export default function EditBlog() {
       <p className="text-gray-600 mt-2">Update your article details</p>
     </div>
 
-    {/* Title */}
     <div className="mb-6">
       <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
         Article Title <span className="text-red-500">*</span>
@@ -146,7 +144,6 @@ export default function EditBlog() {
       />
     </div>
 
-    {/* Content */}
     <div className="mb-6">
       <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
         Article Content <span className="text-red-500">*</span>
@@ -161,7 +158,6 @@ export default function EditBlog() {
       />
     </div>
 
-    {/* Image Upload */}
     <div className="mb-6">
       <label className="block text-sm font-medium text-gray-700 mb-2">
         Image
@@ -206,7 +202,6 @@ export default function EditBlog() {
       )}
     </div>
 
-    {/* Tags */}
     <div className="mb-6">
       <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
       <div className="flex items-center">
@@ -244,7 +239,6 @@ export default function EditBlog() {
       )}
     </div>
 
-    {/* Categories */}
     <div className="mb-8">
       <label className="block text-sm font-medium text-gray-700 mb-2">
         Categories <span className="text-red-500">*</span>
@@ -269,7 +263,6 @@ export default function EditBlog() {
       )}
     </div>
 
-    {/* Submit Button */}
     <div className="mt-8">
       <button
         type="button"
