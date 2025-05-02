@@ -12,6 +12,7 @@ import ProfileSettings from './pages/Profile.jsx'
 import { AuthProvider } from './api/AuthContext.jsx'
 import PrivateRoute from './components/PrivateRoute.jsx'
 import PublicRoute from './components/PublicRoute.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
           <Route path='/editblog/:id' element={<PrivateRoute><EditBlog /></PrivateRoute>} />
           <Route path='/blog/:id' element={<ViewBlog />} />
           <Route path='/profile' element={<PrivateRoute><ProfileSettings /></PrivateRoute>} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </AuthProvider>
