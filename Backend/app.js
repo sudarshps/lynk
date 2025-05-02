@@ -15,7 +15,7 @@ app.use(cookieParser())
 const corsOptions = {
     origin:process.env.FRONTEND_URL,
     methods:['GET','POST','PUT','PATCH','DELETE'],
-    allowHeaders:['Content-Type','Authorization'],
+    allowedHeaders:['Content-Type','Authorization'],
     credentials:true
 }
 
@@ -24,7 +24,7 @@ app.use(cors(corsOptions))
 app.use('/api/users',userRoute)
 app.use('/api/article',articleRoute)
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT
 
 app.listen(PORT,(error) => {
     if(!error){   
