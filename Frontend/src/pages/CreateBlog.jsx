@@ -5,6 +5,8 @@ import {
 } from 'lucide-react';
 import ResponsiveAppBar from '../components/Navbar';
 import axiosApi from '../api/axiosApi';
+import Swal from 'sweetalert2'
+
 
 export default function CreateBlog() {
     const [title, setTitle] = useState('');
@@ -13,7 +15,7 @@ export default function CreateBlog() {
     const [currentTag, setCurrentTag] = useState('');
     const [image, setImage] = useState(null);
     const [selectedCategories, setSelectedCategories] = useState([]);
-    
+
 
     const fileInputRef = useRef(null);
 
@@ -49,7 +51,11 @@ export default function CreateBlog() {
         const validImageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
         if (!validImageTypes.includes(file.type)) {
-            alert('Only image files (JPEG, PNG, GIF, WebP) are allowed.');
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: 'Only image files (JPEG, PNG, GIF, WebP) are allowed.',
+            });
             return;
         }
 
@@ -65,9 +71,9 @@ export default function CreateBlog() {
         setImage(null);
     };
 
-    const toggleCategory = (categoryId) => {        
+    const toggleCategory = (categoryId) => {
         const categoryName = availableCategories.find(cat => cat.id === categoryId)?.name;
-        
+
         if (!categoryName) return;
         if (selectedCategories.includes(categoryName)) {
             setSelectedCategories(selectedCategories.filter(category => category !== categoryName));
@@ -78,17 +84,29 @@ export default function CreateBlog() {
 
     const handleSubmit = async () => {
         if (!title.trim()) {
-            alert('Please enter an article title.');
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: 'Please enter an article title.',
+            });
             return;
         }
 
         if (!description.trim()) {
-            alert('Please enter the article content.');
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: 'Please enter the article content.',
+            });
             return;
         }
 
         if (selectedCategories.length === 0) {
-            alert('Please select at least one category.');
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: 'Please select at least one category.',
+            });
             return;
         }
 
@@ -105,7 +123,7 @@ export default function CreateBlog() {
         let articleDetails = {
             title,
             description,
-            image:null,
+            image: null,
             tags,
             selectedCategories
         }
@@ -114,25 +132,31 @@ export default function CreateBlog() {
 
         if (image) {
             formData.append('file', image.file);
-            formData.append('upload_preset','lynk_blog')
-            const res = await fetch('https://api.cloudinary.com/v1_1/dqoenwy9q/image/upload',{
-                method:'POST',
-                body:formData
+            formData.append('upload_preset', 'lynk_blog')
+            const res = await fetch('https://api.cloudinary.com/v1_1/dqoenwy9q/image/upload', {
+                method: 'POST',
+                body: formData
             })
 
             const data = await res.json()
             const imageUrl = data.secure_url
             articleDetails.image = imageUrl
-            
+
         }
 
         try {
             await axiosApi.post('/api/article/create', articleDetails)
-                .then((res) => console.log(res))
-            alert('Article saved successfully!');
+                .then((res) => {
+                    Swal.fire({
+                        title: "Success!",
+                        text: 'Article saved successfully!',
+                        icon: "success"
+                    });
+                })
+
         } catch (error) {
             console.error(error);
-            
+
         }
 
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axiosApi from '../api/axiosApi';
 import ResponsiveAppBar from '../components/Navbar';
+import Swal from 'sweetalert2'
 
 const availableCategories = [
   'Technology', 'Health', 'Finance', 'Travel',
@@ -41,10 +42,18 @@ export default function ProfileSettings() {
         firstName: user.firstName,
         selectedCategories: user.preference
       });
-      alert('Profile updated!');
+      Swal.fire({
+            title: "Success!",
+            text: 'Profile updated!',
+            icon: "success"
+          });
     } catch (err) {
       console.error(err);
-      alert('Error updating profile.');
+       Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: 'Error updating profile.',
+            });
     }
   };
 
@@ -52,12 +61,20 @@ export default function ProfileSettings() {
     if (!passwords.current || !passwords.newPass) return alert('Fill both fields');
     try {
       await axiosApi.put('/api/users/update', passwords);
-      alert('Password updated!');
+      Swal.fire({
+            title: "Success!",
+            text: 'password updated!',
+            icon: "success"
+          });
       setPasswords({ current: '', newPass: '' });
       setShowPasswordFields(false);
     } catch (err) {
       console.error(err);
-      alert(err.response.data.message);
+      Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: err.response.data.message,
+            });
     }
   };
 

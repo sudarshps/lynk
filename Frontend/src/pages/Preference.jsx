@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ResponsiveAppBar from '../components/Navbar';
 import axiosApi from '../api/axiosApi';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
 
 const categories = [
   'Technology',
@@ -30,7 +31,11 @@ const Preference = () => {
 
   const handleSubmit = async() => {
         if(!selectedCategories.length){
-          alert('Select atleast one category!')
+          Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: 'Select atleast one category!',
+                });
           return 
         }
         await axiosApi.put(`/api/users/update`,{selectedCategories})
