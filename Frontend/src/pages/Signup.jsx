@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-import ResponsiveAppBar from "./Navbar";
+import ResponsiveAppBar from "../components/Navbar";
 import { Link } from "react-router-dom";
-import DatePickerUI from "./DatePicker";
+import DatePickerUI from "../components/DatePicker";
 import Swal from 'sweetalert2'
 import { useNavigate } from "react-router-dom";
 import axiosApi from "../api/axiosApi";
+import { useAuth } from "../api/AuthContext";
 
 export default function RegistrationForm() {
     const [formData, setFormData] = useState({
@@ -21,6 +22,7 @@ export default function RegistrationForm() {
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [errors, setErrors] = useState({});
+    const {setUser} = useAuth()
 
     const navigate = useNavigate()
 
@@ -77,7 +79,16 @@ export default function RegistrationForm() {
             newErrors.password = "Password is required";
         } else if (formData.password.length < 8) {
             newErrors.password = "Password must be at least 8 characters";
+        } else if (!/[A-Z]/.test(formData.password)) {
+            newErrors.password = "Password must include at least one uppercase letter";
+        } else if (!/[a-z]/.test(formData.password)) {
+            newErrors.password = "Password must include at least one lowercase letter";
+        } else if (!/[0-9]/.test(formData.password)) {
+            newErrors.password = "Password must include at least one number";
+        } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(formData.password)) {
+            newErrors.password = "Password must include at least one special character";
         }
+        
 
         if (!formData.confirmPassword) {
             newErrors.confirmPassword = "Please confirm your password";
@@ -101,6 +112,7 @@ export default function RegistrationForm() {
                             text: res.data.message,
                             icon: "success"
                         });
+                        setUser(res.data.userRegistered)
                         navigate('/preferencesection')
                     }
 

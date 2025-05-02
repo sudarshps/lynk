@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Eye, EyeOff, Lock, Mail, AlertCircle } from 'lucide-react';
-import ResponsiveAppBar from './Navbar';
+import ResponsiveAppBar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import axiosApi from '../api/axiosApi';
@@ -30,7 +30,7 @@ export default function LoginPage() {
     }
 
     if (password.length < 6) {
-      setError('Password must be at least 6 characters');
+      setError('Password must be at least 8 characters');
       return;
     }
 

@@ -24,7 +24,7 @@ class UserController{
             const token = generateToken(userRegistered)
             setToken(res,token)
 
-            return res.status(200).json({userCreated:true,message:'Registration successful!'})
+            return res.status(200).json({userCreated:true,userRegistered,message:'Registration successful!'})
         } catch (error) {
             if(error.code === 11000 && error.keyPattern?.email){
 
