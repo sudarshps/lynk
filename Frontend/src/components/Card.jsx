@@ -26,16 +26,16 @@ export default function BlogCard() {
     });
   };
   const [articles, setArticles] = React.useState([])
-  
+
 
   React.useEffect(() => {
     const fetchArticles = async () => {
-        await axiosApi.get(`/api/article/fetcharticles`)
-        .then((res)=>setArticles(res.data.articles))
-        .catch((err)=>console.error(err))
+      await axiosApi.get(`/api/article/fetcharticles`)
+        .then((res) => setArticles(res.data.articles))
+        .catch((err) => console.error(err))
     }
     fetchArticles()
-}, [])
+  }, [])
 
 
   return (
@@ -65,9 +65,12 @@ export default function BlogCard() {
             />}
             <CardContent>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {article.description}
+                {article.description.length > 100
+                  ? article.description.slice(0, 100) + '...'
+                  : article.description}
               </Typography>
             </CardContent>
+
             {/* <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">
                 <FavoriteIcon />
